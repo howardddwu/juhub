@@ -5,7 +5,13 @@ import { Avatar } from '../../shared/Avatar';
 import { rememberNames } from '../../shared/namePool';
 import { navigate } from '../../router';
 import { PlayerInput } from './PlayerInput';
-import { LIKELY_DECK } from './likely-deck';
+import { likelyDeck, hasTiers, LIKELY_TIERS, type LikelyTier } from './likely-deck';
+
+const TIER_LABEL: Record<LikelyTier, (t: ReturnType<typeof useI18n>['t']) => string> = {
+  normal: (t) => t.likelyTierNormal,
+  spicy: (t) => t.likelyTierSpicy,
+  wild: (t) => t.likelyTierWild,
+};
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -21,6 +27,7 @@ export function Likely() {
   const { t, lang } = useI18n();
   const { toast } = useDialogs();
   const [players, setPlayers] = useState<string[]>([]);
+  const [tier, setTier] = useState<LikelyTier>('normal');
   const [deck, setDeck] = useState<string[] | null>(null);
   const [idx, setIdx] = useState(0);
   const [tally, setTally] = useState<Record<string, number>>({});
@@ -31,7 +38,7 @@ export function Likely() {
       return;
     }
     rememberNames(players);
-    setDeck(shuffle(LIKELY_DECK[lang]));
+    setDeck(shuffle(likelyDeck(lang, tier)));
     setIdx(0);
     setTally({});
   };
@@ -39,6 +46,24 @@ export function Likely() {
   const next = () => {
     if (deck) setIdx((i) => (i + 1) % deck.length);
   };
+
+  /** 切档（游戏中随时换尺度）或重摇当前档 */
+  const reshuffle = (nextTier: LikelyTier = tier) => {
+    setTier(nextTier);
+    setDeck(shuffle(likelyDeck(lang, nextTier)));
+    setIdx(0);
+  };
+
+  const tierSelect = (onPick: (tr: LikelyTier) => void) =>
+    hasTiers(lang) ? (
+      <div className="segmented">
+        {LIKELY_TIERS.map((tr) => (
+          <button key={tr} className={`segmented-item ${tier === tr ? 'on' : ''}`} onClick={() => onPick(tr)}>
+            {TIER_LABEL[tr](t)}
+          </button>
+        ))}
+      </div>
+    ) : null;
 
   const drink = (name: string) => {
     setTally((prev) => ({ ...prev, [name]: (prev[name] ?? 0) + 1 }));
@@ -55,6 +80,12 @@ export function Likely() {
           <h1>{t.gameLikely}</h1>
           <span className="nav-spacer" />
         </header>
+        {hasTiers(lang) && (
+          <>
+            <h2 className="section-title">{t.likelyTierLabel}</h2>
+            <div className="card">{tierSelect(setTier)}</div>
+          </>
+        )}
         <h2 className="section-title">{t.teamsPeople(players.length)}</h2>
         <PlayerInput players={players} setPlayers={setPlayers} />
         <button className="btn primary block" onClick={start} disabled={players.length < 2}>
@@ -76,6 +107,8 @@ export function Likely() {
         <span className="nav-spacer" />
       </header>
 
+      {tierSelect(reshuffle)}
+
       <div className="card game-card">
         <div className="game-kicker">{t.likelyPrefix}</div>
         <div className="game-predicate">{deck[idx]}</div>
@@ -95,7 +128,7 @@ export function Likely() {
         <button className="btn grow" onClick={next}>
           {t.likelyNext}
         </button>
-        <button className="btn grow" onClick={() => setDeck(shuffle(LIKELY_DECK[lang]))}>
+        <button className="btn grow" onClick={() => reshuffle()}>
           {t.likelyShuffle}
         </button>
       </div>
