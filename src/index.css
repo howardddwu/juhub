@@ -1074,3 +1074,137 @@ select:focus {
   opacity: 0.6;
   margin-top: 18px;
 }
+
+/* ---- drink games ---- */
+.drink-disclaimer {
+  background: var(--warn);
+  color: #fff;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 13px;
+  padding: 9px;
+  margin-bottom: 14px;
+  opacity: 0.9;
+}
+
+.game-card {
+  min-height: 132px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.game-kicker {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.game-predicate {
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.tap-grid {
+  margin-top: 4px;
+}
+
+.bottom-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* tally / 喝酒榜 */
+.tally-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tally-row:last-child {
+  border-bottom: none;
+}
+
+.tally-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.tally-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* bomb */
+.bomb-range {
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.bomb-hint {
+  font-size: 15px;
+  color: var(--warn);
+  font-weight: 600;
+}
+
+.bomb-guess-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.bomb-guess-row .amount-input {
+  flex: 1;
+}
+
+.bomb-guess-row .btn {
+  white-space: nowrap;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.vote-pass.boom {
+  background: linear-gradient(160deg, #ef4444, #b91c1c);
+}
+
+.boom-sub {
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+.boom-exit {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top));
+  left: 12px;
+  color: #fff;
+  opacity: 0.85;
+}
+
+/* king */
+.king-crown {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--warn);
+  margin: 8px 0 14px;
+}
+
+.king-number {
+  font-size: 52px;
+  font-weight: 700;
+}
+
+.king-hide {
+  font-size: 14px;
+  opacity: 0.8;
+}

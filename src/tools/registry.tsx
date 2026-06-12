@@ -41,4 +41,12 @@ export const TOOLS: ToolMeta[] = [
     path: '/vote',
     component: lazy(() => import('./vote/VoteApp')),
   },
+  {
+    id: 'drink',
+    icon: '🍻',
+    title: (t) => t.toolDrink,
+    desc: (t) => t.toolDrinkDesc,
+    path: '/drink',
+    component: lazy(() => import('./drink/DrinkApp')),
+  },
 ];
